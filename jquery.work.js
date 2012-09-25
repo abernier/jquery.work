@@ -17,9 +17,14 @@
           dfd.reject(item);
         }, false);
    
-        //Start the worker
+        // Configure the worker with his action
         worker.postMessage({
-          action: action.toString(),
+          cmd: 'init',
+          action: action.toString()
+        });
+        // Process
+        worker.postMessage({
+          cmd: 'process',
           args: args
         });
       } else {
