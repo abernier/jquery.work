@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title></title>
+</head>
+<body>
+  <script src="jquery.js"></script>
+  <script src="jquery.work.js"></script>
+  <script>
+  (function () {
+
+  	// A greedy function (to be run in the worker)
+  	//
+		// Note that this function will not be run in the window context, and therefore cannot see any global vars!
+		function findPrimes(from, to) {
+			var divisor, isPrime, result = [];
+		  var current = from;
+
+			while (current < to) { 		
+				divisor = parseInt(current / 2, 10); 		
+				isPrime = true; 		
+				while (divisor > 1) {
+					if (current % divisor === 0) {
+						isPrime = false;
+						divisor = 0;
+					} else {
+						divisor -= 1;
+					}
+				}
+				if (isPrime) {
+					result.push(current);
+				}
+				current += 1;
+			}
+			return result;
+		}
+
+		$.work(findPrimes, 2, 50000).then(function (data) {
+			alert('all done');
+			console.log(data);
+		}).fail(function (data) {
+			alert('oops');
+		});
+
+  }());
+  </script>
+</body>
+</html>
